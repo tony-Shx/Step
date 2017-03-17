@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg">
+
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="  这里可以加一个显示天气和室外环境的功能"
+    android:textSize="40dp"
+    android:id="@+id/textView4"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#111111"
+        android:layout_below="@+id/textView4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="19dp"
+        android:id="@+id/relativeLayout">
+
+        <ImageView
+            android:id="@+id/touxiang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/buddy_1" />
+
+        <TextView
+            android:id="@+id/XXX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="80dp"
+            android:layout_marginTop="40dp"
+            android:text="ID:" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="XXXXXX"
+            android:id="@+id/t1"
+            android:textColor="#AAAAAA"
+            android:layout_above="@+id/t2"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="14dp"
+            android:layout_marginEnd="14dp" />
+
+        <TextView
+            android:id="@+id/t2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/XXX"
+            android:layout_alignStart="@+id/XXX"
+            android:layout_below="@+id/XXX"
+            android:text="初级跑者"
+            android:textColor="#AAAAAA" />
+    </RelativeLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/tag"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/imageView2" />
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#111111"
+    android:layout_below="@+id/imageView2"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_marginTop="8dp"
+    android:id="@+id/relativeLayout2">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我的记录"
+        android:textStyle="italic"
+        android:textColor="#808080"
+        android:textSize="20dp"
+        android:id="@+id/textView_mylist" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="累计里程"
+        android:textStyle="italic"
+        android:textColor="#808080"
+        android:textSize="20dp"
+        android:id="@+id/textView7"
+        android:layout_below="@+id/textView_mylist"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="22dp" />
+    <TextView
+        android:id="@+id/run_corder"
+        android:text="0.00"
+        android:textColor="#f0f0f0"
+        android:textStyle="bold"
+        android:textSize="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/textView6"
+        android:layout_toStartOf="@+id/textView6" />
+    <TextView
+        android:text="KM"
+        android:textStyle="bold"
+        android:textColor="#808080"
+        android:textSize="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:id="@+id/textView6"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="累计时间"
+        android:textStyle="italic"
+        android:textColor="#808080"
+        android:textSize="20dp"
+        android:layout_marginTop="110dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/textView_mylist"
+        android:layout_alignEnd="@+id/textView_mylist"
+        android:id="@+id/textView10" />
+    <TextView
+        android:id="@+id/run_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.0"
+        android:textStyle="bold"
+        android:textColor="#808080"
+        android:textSize="30dp"
+        android:layout_alignTop="@+id/textView10"
+        android:layout_alignLeft="@+id/run_corder"
+        android:layout_alignStart="@+id/run_corder"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="min"
+        android:textSize="25dp"
+        android:textColor="#808080"
+        android:layout_alignBaseline="@+id/run_time"
+        android:layout_alignBottom="@+id/run_time"
+        android:layout_alignRight="@+id/textView6"
+        android:layout_alignEnd="@+id/textView6"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp" />
+
+</RelativeLayout>
+
+
+</RelativeLayout>

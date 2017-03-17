@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.henu.step.RunningActivity">
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/bmapView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentTop="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_running"
+        android:id="@+id/button_startRunning"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pause_run"
+        android:id="@+id/button_pauseRunning"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/button_startRunning"
+        android:layout_toEndOf="@+id/button_startRunning"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stop_running"
+        android:id="@+id/button_stopRunning"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/button_pauseRunning"
+        android:layout_toEndOf="@+id/button_pauseRunning"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#a0000000"
+        android:paddingBottom="5dp"
+        android:layout_above="@+id/button_startRunning"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="#ffffff"
+            android:id="@+id/editText_length"
+            android:layout_margin="5dp"
+            android:text="累计距离：0.00 千米"
+            />
+        <TextView
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="#ffffff"
+            android:id="@+id/editText_time"
+            android:text="累计用时： 0分 0秒"
+            />
+        <TextView
+            android:textColor="#ffffff"
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:id="@+id/editText_speed"
+            android:text= "平均速度： 0 米/秒"
+            />
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>
