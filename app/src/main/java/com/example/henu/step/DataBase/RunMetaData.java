@@ -19,5 +19,6 @@ public final class RunMetaData {
         public static final String TOTAL_TIME = "duration";
         public static final String CONSUME = "consume";
         public static final String POINTS = "points";
+        public static final String ISUPDATE = "is_update";
     }
 }

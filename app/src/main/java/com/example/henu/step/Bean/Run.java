@@ -16,6 +16,15 @@ public class Run {
     private long start_time, end_time;
     private float length,consume;
     private String points;
+    private boolean isUpdate;
+
+    public boolean isUpdate() {
+        return isUpdate;
+    }
+
+    public void setUpdate(boolean update) {
+        isUpdate = update;
+    }
 
     public String getTelephone() {
         return telephone;

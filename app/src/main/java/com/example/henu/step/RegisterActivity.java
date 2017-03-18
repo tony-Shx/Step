@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
@@ -233,7 +234,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
 
 	private void SaveUser() {
 		System.out.println("!!执行到保存数据！！");
-		User user = new User();
+		final User user = new User();
 		user.setUsername("");
 		user.setTelephone(editText_telephone.getText().toString());
 		user.setPassword(editText_password.getText().toString());
@@ -252,6 +253,12 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
 									// TODO Auto-generated method stub
+									SharedPreferences sp = getSharedPreferences("login",Context.MODE_PRIVATE);
+									SharedPreferences.Editor editor = sp.edit();
+									editor.putBoolean("isLogin",true);
+									editor.putString("telephone",user.getTelephone());
+									editor.putString("password",user.getPassword());
+									editor.commit();
 									Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 									startActivity(intent);
 									finish();

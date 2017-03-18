@@ -1,13 +1,11 @@
 package com.example.henu.step;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -31,13 +29,14 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.example.henu.step.Bean.Run;
+import com.example.henu.step.Bean.RunningRecord;
 import com.example.henu.step.DataBase.DatebaseAdapter;
+import com.example.henu.step.Util.DataHelper;
 import com.example.henu.step.Util.MathHelper;
 
 import java.io.IOException;
@@ -48,9 +47,14 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
+
 public class RunningActivity extends AppCompatActivity implements View.OnClickListener {
 
 	private MapView mMapView;
+	private DatebaseAdapter db;
+	private Run run;
 	private BaiduMap mBaiduMap;
 	private TextView editText_length, editText_time, editText_speed;
 	private BitmapDescriptor mCurrentMarker;
@@ -61,6 +65,9 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 	List<LatLng> points = new ArrayList<LatLng>();
 	private boolean isStop = true;
 	private long start_time;
+	private final int UPDATESUCCESS = 0X100;
+	private final int UPDATEFAILED = 0X101;
+	private final int RECEIVELOCATION = 0X102;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +107,7 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 		double speed;
 
 		public void handleMessage(Message msg) {
-			System.out.println("接收到Handler！！");
+			if(msg.arg1==RECEIVELOCATION){
 			BDLocation location = (BDLocation) msg.obj;
 			// 开启定位图层
 			mBaiduMap.setMyLocationEnabled(true);
@@ -160,6 +167,18 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 				} else {
 					mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLngZoom(point, 20));
 				}
+			}
+			}else if(msg.arg1==UPDATESUCCESS){
+				run.setUpdate(true);
+				db.add(run);
+				isStop = true;
+				startActivity(new Intent(getApplicationContext(),MainActivity.class));
+				finish();
+			}else if(msg.arg1==UPDATEFAILED){
+				run.setUpdate(false);
+				db.add(run);
+				isStop = true;
+				Toast.makeText(getApplicationContext(),"数据同步出错，请检查网络连接",Toast.LENGTH_LONG).show();
 			}
 		}
 	}
@@ -226,8 +245,8 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				DatebaseAdapter db = new DatebaseAdapter(getApplicationContext());
-				Run run = new Run();
+				db = new DatebaseAdapter(getApplicationContext());
+				run = new Run();
 				SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
 				run.setTelephone(sp.getString("telephone", null));
 				run.setStart_time(start_time);
@@ -261,14 +280,34 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 					}
 				}
 				run.setPoints(sb.toString());
-				db.add(run);
-				ArrayList<Run> list = db.findAll();
-				for(Run run1:list){
-					System.out.println(run1.toString());
-				}
-				isStop = true;
-				startActivity(new Intent(getApplicationContext(),MainActivity.class));
-				finish();
+
+				RunningRecord runningRecord = new RunningRecord();
+				runningRecord.setPoints(run.getPoints());
+				runningRecord.setTelephone(run.getTelephone());
+				runningRecord.setStart_time(DataHelper.changedata(run.getStart_time()));
+				runningRecord.setEnd_time(DataHelper.changedata(run.getEnd_time()));
+				runningRecord.setLength(run.getLength());
+				runningRecord.setDuration(run.getDuration());
+				runningRecord.setConsume(run.getConsume());
+				runningRecord.save(new SaveListener<String>() {
+					@Override
+					public void done(String s, BmobException e) {
+						if(e==null){
+							Message msg = new Message();
+							msg.arg1 = UPDATESUCCESS;
+							handler.sendMessage(msg);
+						}else{
+							Message msg = new Message();
+							msg.arg1 = UPDATEFAILED;
+							handler.sendMessage(msg);
+							Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
+
+						}
+					}
+				});
+
+
+
 				//Toast.makeText(getApplicationContext(), "数据保存成功！", Toast.LENGTH_SHORT).show();
 			}
 		}).start();

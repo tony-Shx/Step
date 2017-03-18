@@ -31,6 +31,7 @@ public class DatebaseAdapter {
         values.put(RunMetaData.RunTable.TOTAL_TIME,run.getDuration());
         values.put(RunMetaData.RunTable.CONSUME,run.getConsume());
         values.put(RunMetaData.RunTable.POINTS,run.getPoints());
+        values.put(RunMetaData.RunTable.ISUPDATE,run.isUpdate());
         //执行插入操作
         db.insert(RunMetaData.RunTable.TABLE_NAME,RunMetaData.RunTable.TELEPHONE,values);
         db.close();

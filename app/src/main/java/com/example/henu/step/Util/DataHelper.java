@@ -7,12 +7,12 @@ package com.example.henu.step.Util;
 public  class DataHelper {
 	public DataHelper() {
 	}
-	public String changedata(long time){
+	public static String changedata(long time){
 		String date = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new java.util.Date((time+1483200000L) * 1000));
 		return date;
 	}
 
-	public String chagetime(int temp){
+	public static String chagetime(int temp){
 		//处理运动时间
 		if (temp > 59) {
 			int fen = temp / 60;

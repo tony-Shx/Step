@@ -18,6 +18,7 @@ public class MyLocationListener implements BDLocationListener {
 
 	private BDLocation location;
 	private Handler handler;
+	private final int RECEIVELOCATION = 0X102;
 
 	public MyLocationListener(Handler handler) {
 		this.handler = handler;
@@ -26,6 +27,7 @@ public class MyLocationListener implements BDLocationListener {
 	@Override
 	public void onReceiveLocation(BDLocation location) {
 		Message message = new Message();
+		message.arg1 = RECEIVELOCATION;
 		message.obj = location;
 		handler.sendMessage(message);
 		//Receive Location
