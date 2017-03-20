@@ -62,6 +62,8 @@
 
         <activity android:name=".MylistActivity">
         </activity>
+        <activity android:name=".RecordShowActivity">
+        </activity>
     </application>
 
 </manifest>

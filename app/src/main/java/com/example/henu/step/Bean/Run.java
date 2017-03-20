@@ -1,10 +1,12 @@
 package com.example.henu.step.Bean;
 
+import java.io.Serializable;
+
 /**
  * Created by 宋浩祥 on 2017/3/7.
  */
 
-public class Run {
+public class Run implements Serializable{
     private String telephone;
     public int getId() {
         return id;
@@ -22,8 +24,8 @@ public class Run {
         return isUpdate;
     }
 
-    public void setUpdate(boolean update) {
-        isUpdate = update;
+    public void setUpdate(int update) {
+        isUpdate = update != 0;
     }
 
     public String getTelephone() {

@@ -47,6 +47,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.Bmob;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -76,6 +77,8 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 		//注意该方法要再setContentView方法之前实现
 		SDKInitializer.initialize(getApplicationContext());
 		setContentView(R.layout.activity_running);
+		//第一：默认初始化
+		Bmob.initialize(this, "bd7c2a4e820ce954f26ac4b4b2aaa85d");
 		//获取地图控件引用
 		mMapView = (MapView) findViewById(R.id.bmapView);
 		mBaiduMap = mMapView.getMap();
@@ -94,7 +97,7 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 	}
 
 	private class MyHandler extends Handler {
-		public MyHandler() {
+		MyHandler() {
 
 		}
 
@@ -169,13 +172,13 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 				}
 			}
 			}else if(msg.arg1==UPDATESUCCESS){
-				run.setUpdate(true);
+				run.setUpdate(1);
 				db.add(run);
 				isStop = true;
 				startActivity(new Intent(getApplicationContext(),MainActivity.class));
 				finish();
 			}else if(msg.arg1==UPDATEFAILED){
-				run.setUpdate(false);
+				run.setUpdate(0);
 				db.add(run);
 				isStop = true;
 				Toast.makeText(getApplicationContext(),"数据同步出错，请检查网络连接",Toast.LENGTH_LONG).show();
@@ -214,8 +217,6 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 					}
 				} );
 				dialog.show();
-
-
 				break;
 			default:
 				break;
@@ -250,17 +251,14 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 				SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
 				run.setTelephone(sp.getString("telephone", null));
 				run.setStart_time(start_time);
-				URL url = null;
 				try {
-					url = new URL("http://www.baidu.com");
+					URL url = new URL("http://www.baidu.com");
 					URLConnection uc = url.openConnection();// 生成连接对象
 					uc.connect();// 发出连接
 					long ld = uc.getDate();// 读取网站日期时间
 					System.out.println("获取到的网络时间："+ld);
 					long endtime = ld/1000-1483200000L;
 					run.setEnd_time(endtime);
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -280,7 +278,7 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 					}
 				}
 				run.setPoints(sb.toString());
-
+				//创建服务器端存储对象runningRecord（一个对象对应服务器一条记录）
 				RunningRecord runningRecord = new RunningRecord();
 				runningRecord.setPoints(run.getPoints());
 				runningRecord.setTelephone(run.getTelephone());
@@ -301,10 +299,27 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 							msg.arg1 = UPDATEFAILED;
 							handler.sendMessage(msg);
 							Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
-
 						}
 					}
 				});
+
+
+//				new SaveListener<String>() {
+//					@Override
+//					public void done(String s, BmobException e) {
+//						if(e==null){
+//							Message msg = new Message();
+//							msg.arg1 = UPDATESUCCESS;
+//							handler.sendMessage(msg);
+//						}else{
+//							Message msg = new Message();
+//							msg.arg1 = UPDATEFAILED;
+//							handler.sendMessage(msg);
+//							Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
+//
+//						}
+//					}
+//				}
 
 
 

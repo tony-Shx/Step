@@ -63,7 +63,9 @@ public class DatebaseAdapter {
             run.setDuration(cursor.getInt(cursor.getColumnIndex("duration")));
             run.setConsume(cursor.getFloat(cursor.getColumnIndex("consume")));
             run.setPoints(cursor.getString(cursor.getColumnIndex("points")));
+            run.setUpdate(cursor.getInt(cursor.getColumnIndex("isUpdate")));
         }
+        cursor.close();
         return run;
     }
 
@@ -81,8 +83,10 @@ public class DatebaseAdapter {
             run.setDuration(cursor.getInt(cursor.getColumnIndex("duration")));
             run.setConsume(cursor.getFloat(cursor.getColumnIndex("consume")));
             run.setPoints(cursor.getString(cursor.getColumnIndex("points")));
+            run.setUpdate(cursor.getInt(cursor.getColumnIndex("is_update")));
             runArrayList.add(run);
         }
+        cursor.close();
         return runArrayList;
     }
 
