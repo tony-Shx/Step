@@ -6,21 +6,31 @@
     android:background="@mipmap/bg">
 
 
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="  这里可以加一个显示天气和室外环境的功能"
-    android:textSize="40dp"
-    android:id="@+id/textView4"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true" />
+    <RelativeLayout
+        android:id="@+id/weather"
+        android:background="#111111"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/w1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/button_w"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:background="@mipmap/wea"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#111111"
-        android:layout_below="@+id/textView4"
+        android:layout_below="@+id/weather"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="19dp"
@@ -36,15 +46,14 @@
             android:id="@+id/XXX"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="80dp"
+            android:layout_toLeftOf="@+id/t1"
             android:layout_marginTop="40dp"
             android:text="ID:" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="XXXXXX"
+            android:text="XXXXXXXX"
             android:id="@+id/t1"
             android:textColor="#AAAAAA"
             android:layout_above="@+id/t2"

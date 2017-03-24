@@ -25,6 +25,7 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launch"
         android:label="@string/app_name"
@@ -39,7 +40,6 @@
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -53,6 +53,7 @@
         </activity>
         <activity android:name=".RunningActivity">
         </activity>
+        <activity android:name=".WeatherActivity" android:theme="@style/Theme.AppCompat"/>
 
         <service
             android:name="com.baidu.location.f"

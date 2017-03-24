@@ -122,7 +122,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 										editor.putString("password",password);
 										editor.commit();
 										Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-									    startActivity(intent);
+										startActivity(intent);
 									    finish();
 									}else{
 										Toast.makeText(getApplicationContext(), "密码错误，请检查您的密码", Toast.LENGTH_LONG).show();

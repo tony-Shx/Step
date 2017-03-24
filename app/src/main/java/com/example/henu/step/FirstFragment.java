@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.henu.step.Bean.Run;
@@ -22,9 +23,8 @@ import java.util.ArrayList;
  */
 public class FirstFragment extends Fragment {
 
-	private TextView txt_run_corder;
-	private TextView txt_run_time;
-	private TextView t1, textView_mylist;
+	private TextView txt_run_corder,txt_run_time,t1, textView_mylist;
+	private Button setArea,button_w;
 
 
 	@Nullable
@@ -39,6 +39,14 @@ public class FirstFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(getActivity(), MylistActivity.class));
+			}
+		});
+
+		button_w = (Button) view.findViewById(R.id.button_w);
+		button_w.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(getActivity(), WeatherActivity.class));
 			}
 		});
 		dateInit();
@@ -60,6 +68,7 @@ public class FirstFragment extends Fragment {
 		txt_run_time.setText(df.format(total_time / 60.00));
 		SharedPreferences sp = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
 		t1.setText(sp.getString("telephone", "null"));
+
 	}
 }
 
