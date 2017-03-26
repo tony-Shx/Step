@@ -45,6 +45,11 @@ public class DatebaseAdapter {
     }
 
     public void update(Run run){
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(RunMetaData.RunTable.ISUPDATE,run.isUpdate());
+        String agre[] = {String.valueOf(run.getId())};
+        db.update(RunMetaData.RunTable.TABLE_NAME,values,"_id=?",agre);
 
     }
 
