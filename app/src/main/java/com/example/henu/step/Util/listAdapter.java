@@ -13,7 +13,6 @@ import com.example.henu.step.R;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 /**
  * Created by Administrator on 2017/3/13.
@@ -67,12 +66,12 @@ public class listAdapter extends BaseAdapter {
 		Run run=list.get(position);
 		DecimalFormat df = new DecimalFormat("0.00");
 		StringBuffer sb = new StringBuffer();
-		sb.append(DataHelper.changedata(run.getStart_time()));
+		sb.append(DateHelper.changeDateToString(run.getStart_time()));
 		sb.append(" - ");
-		sb.append(DataHelper.changedata(run.getEnd_time()));
+		sb.append(DateHelper.changeDateToString(run.getEnd_time()));
 		viewHolder.listview_time.setText(sb.toString());
 		viewHolder.listview_length.setText(df.format(run.getLength()));
-		viewHolder.listview_duration.setText(DataHelper.chagetime(run.getDuration()));
+		viewHolder.listview_duration.setText(DateHelper.chagetime(run.getDuration()));
 		viewHolder.listview_consume.setText(df.format(run.getConsume())+"千卡");
 		if(run.isUpdate()){
 			viewHolder.listview_image_update_status.setImageResource(R.mipmap.update_ok);

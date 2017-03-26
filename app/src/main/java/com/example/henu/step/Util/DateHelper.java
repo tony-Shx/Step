@@ -1,13 +1,26 @@
 package com.example.henu.step.Util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by Administrator on 2017/3/13.
  */
 
-public class DataHelper {
+public class DateHelper {
 
-	public static String changedata(long time){
+	public static String changeDateToString(long time){
 		return new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new java.util.Date((time+1483200000L) * 1000));
+	}
+
+	public  static Long changeStringToDate(String str){
+		try {
+			return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(str).getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return 0L;
 	}
 
 	static String chagetime(int temp){

@@ -15,87 +15,90 @@ import java.util.ArrayList;
 
 public class DatebaseAdapter {
 
-    private DatabaseHelper databaseHelper;
-    public DatebaseAdapter(Context context) {
-        databaseHelper = new DatabaseHelper(context);
-    }
+	private DatabaseHelper databaseHelper;
 
-    public void add(Run run){
-        SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        //将数据按照键值对存入ContentValues
-        ContentValues values = new ContentValues();
-        values.put(RunMetaData.RunTable.ID,run.getId());
-        values.put(RunMetaData.RunTable.TELEPHONE,run.getTelephone());
-        values.put(RunMetaData.RunTable.START_TIME,run.getStart_time());
-        values.put(RunMetaData.RunTable.END_TIME,run.getEnd_time());
-        values.put(RunMetaData.RunTable.TOTAL_LENGTH,run.getLength());
-        values.put(RunMetaData.RunTable.TOTAL_TIME,run.getDuration());
-        values.put(RunMetaData.RunTable.CONSUME,run.getConsume());
-        values.put(RunMetaData.RunTable.POINTS,run.getPoints());
-        values.put(RunMetaData.RunTable.ISUPDATE,run.isUpdate());
-        //执行插入操作
-        db.insert(RunMetaData.RunTable.TABLE_NAME,RunMetaData.RunTable.TELEPHONE,values);
-        db.close();
-        System.out.println("插入数据成功！");
-    }
-    public void delete(String id){
-        SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        String[] args = {id};
-        db.delete(RunMetaData.RunTable.TABLE_NAME,"_id=?",args);
-        db.close();
-    }
+	public DatebaseAdapter(Context context) {
+		databaseHelper = new DatabaseHelper(context);
+	}
 
-    public void update(Run run,String oldID){
-        SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(RunMetaData.RunTable.ID,run.getId());
-        values.put(RunMetaData.RunTable.ISUPDATE,run.isUpdate());
-        String agre[] = {oldID};
-        db.update(RunMetaData.RunTable.TABLE_NAME,values,"_id=?",agre);
-    }
+	public void add(Run run) {
+		SQLiteDatabase db = databaseHelper.getWritableDatabase();
+		//将数据按照键值对存入ContentValues
+		ContentValues values = new ContentValues();
+		values.put(RunMetaData.RunTable.ID, run.getId());
+		values.put(RunMetaData.RunTable.TELEPHONE, run.getTelephone());
+		values.put(RunMetaData.RunTable.START_TIME, run.getStart_time());
+		values.put(RunMetaData.RunTable.END_TIME, run.getEnd_time());
+		values.put(RunMetaData.RunTable.TOTAL_LENGTH, run.getLength());
+		values.put(RunMetaData.RunTable.TOTAL_TIME, run.getDuration());
+		values.put(RunMetaData.RunTable.CONSUME, run.getConsume());
+		values.put(RunMetaData.RunTable.POINTS, run.getPoints());
+		values.put(RunMetaData.RunTable.ISUPDATE, run.isUpdate());
+		//执行插入操作
+		db.insert(RunMetaData.RunTable.TABLE_NAME, RunMetaData.RunTable.TELEPHONE, values);
+		db.close();
+		System.out.println("插入数据成功！");
+	}
 
-    public Run findById(int id){
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        String[] selectionArgs = {String.valueOf(id)};
-        Cursor cursor = db.query(RunMetaData.RunTable.TABLE_NAME,null,"_id=?",selectionArgs,null,null,null);
-        Run run = null;
-        while (cursor.moveToNext()){
-            run =  new Run();
-            run.setId(cursor.getString(cursor.getColumnIndex("_id")));
-            run.setTelephone(cursor.getString(cursor.getColumnIndex("telephone")));
-            run.setStart_time(cursor.getInt(cursor.getColumnIndex("start_time")));
-            run.setEnd_time(cursor.getInt(cursor.getColumnIndex("end_time")));
-            run.setLength(cursor.getFloat(cursor.getColumnIndex("length")));
-            run.setDuration(cursor.getInt(cursor.getColumnIndex("duration")));
-            run.setConsume(cursor.getFloat(cursor.getColumnIndex("consume")));
-            run.setPoints(cursor.getString(cursor.getColumnIndex("points")));
-            run.setUpdate(cursor.getInt(cursor.getColumnIndex("isUpdate")));
-        }
-        cursor.close();
-        return run;
-    }
+	public void delete(String id) {
+		SQLiteDatabase db = databaseHelper.getWritableDatabase();
+		String[] args = {id};
+		db.delete(RunMetaData.RunTable.TABLE_NAME, "_id=?", args);
+		db.close();
+	}
 
-    public ArrayList<Run> findAll(){
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        Cursor cursor = db.query(RunMetaData.RunTable.TABLE_NAME,null,null,null,null,null,null);
-        ArrayList<Run> runArrayList = new ArrayList<>();
-        while (cursor.moveToNext()){
-            Run run =  new Run();
-            run.setId(cursor.getString(cursor.getColumnIndex("_id")));
-            run.setTelephone(cursor.getString(cursor.getColumnIndex("telephone")));
-            run.setStart_time(cursor.getInt(cursor.getColumnIndex("start_time")));
-            run.setEnd_time(cursor.getInt(cursor.getColumnIndex("end_time")));
-            run.setLength(cursor.getFloat(cursor.getColumnIndex("length")));
-            run.setDuration(cursor.getInt(cursor.getColumnIndex("duration")));
-            run.setConsume(cursor.getFloat(cursor.getColumnIndex("consume")));
-            run.setPoints(cursor.getString(cursor.getColumnIndex("points")));
-            run.setUpdate(cursor.getInt(cursor.getColumnIndex("is_update")));
-            runArrayList.add(run);
-        }
-        cursor.close();
-        return runArrayList;
-    }
+	public void update(Run run, String oldID) {
+		SQLiteDatabase db = databaseHelper.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		if (!oldID.equals(run.getId())) {
+			values.put(RunMetaData.RunTable.ID, run.getId());
+		}
+		values.put(RunMetaData.RunTable.ISUPDATE, run.isUpdate());
+		String agre[] = {oldID};
+		db.update(RunMetaData.RunTable.TABLE_NAME, values, "_id=?", agre);
+	}
 
+	public Run findById(String id) {
+		SQLiteDatabase db = databaseHelper.getReadableDatabase();
+		String[] selectionArgs = {id};
+		Cursor cursor = db.query(RunMetaData.RunTable.TABLE_NAME, null, "_id=?", selectionArgs, null, null, null);
+		Run run = null;
+		while (cursor.moveToNext()) {
+			run = new Run();
+			run.setId(cursor.getString(cursor.getColumnIndex("_id")));
+			run.setTelephone(cursor.getString(cursor.getColumnIndex("telephone")));
+			run.setStart_time(cursor.getInt(cursor.getColumnIndex("start_time")));
+			run.setEnd_time(cursor.getInt(cursor.getColumnIndex("end_time")));
+			run.setLength(cursor.getFloat(cursor.getColumnIndex("length")));
+			run.setDuration(cursor.getInt(cursor.getColumnIndex("duration")));
+			run.setConsume(cursor.getFloat(cursor.getColumnIndex("consume")));
+			run.setPoints(cursor.getString(cursor.getColumnIndex("points")));
+			run.setUpdate(cursor.getInt(cursor.getColumnIndex("is_update")));
+		}
+		cursor.close();
+		return run;
+	}
+
+	public ArrayList<Run> findAll() {
+		SQLiteDatabase db = databaseHelper.getReadableDatabase();
+		Cursor cursor = db.query(RunMetaData.RunTable.TABLE_NAME, null, null, null, null, null, null);
+		ArrayList<Run> runArrayList = new ArrayList<>();
+		while (cursor.moveToNext()) {
+			Run run = new Run();
+			run.setId(cursor.getString(cursor.getColumnIndex("_id")));
+			run.setTelephone(cursor.getString(cursor.getColumnIndex("telephone")));
+			run.setStart_time(cursor.getInt(cursor.getColumnIndex("start_time")));
+			run.setEnd_time(cursor.getInt(cursor.getColumnIndex("end_time")));
+			run.setLength(cursor.getFloat(cursor.getColumnIndex("length")));
+			run.setDuration(cursor.getInt(cursor.getColumnIndex("duration")));
+			run.setConsume(cursor.getFloat(cursor.getColumnIndex("consume")));
+			run.setPoints(cursor.getString(cursor.getColumnIndex("points")));
+			run.setUpdate(cursor.getInt(cursor.getColumnIndex("is_update")));
+			runArrayList.add(run);
+		}
+		cursor.close();
+		return runArrayList;
+	}
 
 
 }

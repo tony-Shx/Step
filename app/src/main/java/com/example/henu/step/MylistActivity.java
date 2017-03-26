@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,7 +16,7 @@ import android.widget.Toast;
 import com.example.henu.step.Bean.Run;
 import com.example.henu.step.Bean.RunningRecord;
 import com.example.henu.step.DataBase.DatebaseAdapter;
-import com.example.henu.step.Util.DataHelper;
+import com.example.henu.step.Util.DateHelper;
 import com.example.henu.step.Util.listAdapter;
 
 import java.util.ArrayList;
@@ -76,7 +75,14 @@ public class MylistActivity extends AppCompatActivity implements AdapterView.OnI
 		switch (item.getItemId()) {
 			case 0:
 				int position = item.getOrder();
-				deleteRunRecord(position);
+				if (list.get(position).isUpdate()) {
+					deleteRunRecord(position);
+				} else {
+					Message msg = new Message();
+					msg.arg1 = DELETESUCCESS;
+					msg.obj = list.get(position);
+					handler.sendMessage(msg);
+				}
 				break;
 			case 1:
 				updateRunRecord(item.getOrder());
@@ -110,7 +116,6 @@ public class MylistActivity extends AppCompatActivity implements AdapterView.OnI
 				});
 			}
 		}).start();
-
 	}
 
 	private void freshListViewDate() {
@@ -128,8 +133,8 @@ public class MylistActivity extends AppCompatActivity implements AdapterView.OnI
 				RunningRecord runningRecord = new RunningRecord();
 				runningRecord.setPoints(run.getPoints());
 				runningRecord.setTelephone(run.getTelephone());
-				runningRecord.setStart_time(DataHelper.changedata(run.getStart_time()));
-				runningRecord.setEnd_time(DataHelper.changedata(run.getEnd_time()));
+				runningRecord.setStart_time(DateHelper.changeDateToString(run.getStart_time()));
+				runningRecord.setEnd_time(DateHelper.changeDateToString(run.getEnd_time()));
 				runningRecord.setLength(run.getLength());
 				runningRecord.setDuration(run.getDuration());
 				runningRecord.setConsume(run.getConsume());
@@ -145,6 +150,7 @@ public class MylistActivity extends AppCompatActivity implements AdapterView.OnI
 						} else {
 							Message msg = new Message();
 							msg.arg1 = UPDATEFAILED;
+							msg.arg2 = position;
 							handler.sendMessage(msg);
 							Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
 						}
@@ -178,6 +184,12 @@ public class MylistActivity extends AppCompatActivity implements AdapterView.OnI
 					Toast.makeText(getApplicationContext(), "删除成功", Toast.LENGTH_LONG).show();
 					break;
 				case DELETEFAILED:
+					Run run2 = list.get(msg.arg2);
+					String oldID1 = run2.getId();
+					run2.setId((String) msg.obj);
+					run2.setUpdate(0);
+					db.update(run2, oldID1);
+					freshListViewDate();
 					Toast.makeText(getApplicationContext(), "删除出错，请检查网络连接", Toast.LENGTH_LONG).show();
 					break;
 				default:

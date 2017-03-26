@@ -36,7 +36,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.example.henu.step.Bean.Run;
 import com.example.henu.step.Bean.RunningRecord;
 import com.example.henu.step.DataBase.DatebaseAdapter;
-import com.example.henu.step.Util.DataHelper;
+import com.example.henu.step.Util.DateHelper;
 import com.example.henu.step.Util.MathHelper;
 
 import java.io.IOException;
@@ -286,8 +286,8 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 				RunningRecord runningRecord = new RunningRecord();
 				runningRecord.setPoints(run.getPoints());
 				runningRecord.setTelephone(run.getTelephone());
-				runningRecord.setStart_time(DataHelper.changedata(run.getStart_time()));
-				runningRecord.setEnd_time(DataHelper.changedata(run.getEnd_time()));
+				runningRecord.setStart_time(DateHelper.changeDateToString(run.getStart_time()));
+				runningRecord.setEnd_time(DateHelper.changeDateToString(run.getEnd_time()));
 				runningRecord.setLength(run.getLength());
 				runningRecord.setDuration(run.getDuration());
 				runningRecord.setConsume(run.getConsume());
