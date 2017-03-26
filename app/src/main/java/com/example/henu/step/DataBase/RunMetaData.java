@@ -12,6 +12,7 @@ public final class RunMetaData {
 
     public static abstract class RunTable implements BaseColumns{
         public static final String TABLE_NAME = "run";
+        public static final String ID = "_id";
         public static final String TELEPHONE = "telephone";
         public static final String START_TIME = "start_time";
         public static final String END_TIME = "end_time";

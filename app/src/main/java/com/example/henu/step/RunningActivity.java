@@ -172,12 +172,16 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 				}
 			}
 			}else if(msg.arg1==UPDATESUCCESS){
+				String objectId  = (String) msg.obj;
+				run.setId(objectId);
 				run.setUpdate(1);
 				db.add(run);
 				isStop = true;
 				startActivity(new Intent(getApplicationContext(),MainActivity.class));
 				finish();
 			}else if(msg.arg1==UPDATEFAILED){
+				//更新失败时用系统当前时间作为ID主键
+				run.setId(System.currentTimeMillis()+"");
 				run.setUpdate(0);
 				db.add(run);
 				isStop = true;
@@ -293,6 +297,7 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 						if(e==null){
 							Message msg = new Message();
 							msg.arg1 = UPDATESUCCESS;
+							msg.obj = s;
 							handler.sendMessage(msg);
 						}else{
 							Message msg = new Message();

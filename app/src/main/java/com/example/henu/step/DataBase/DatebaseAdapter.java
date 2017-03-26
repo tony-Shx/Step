@@ -24,6 +24,7 @@ public class DatebaseAdapter {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         //将数据按照键值对存入ContentValues
         ContentValues values = new ContentValues();
+        values.put(RunMetaData.RunTable.ID,run.getId());
         values.put(RunMetaData.RunTable.TELEPHONE,run.getTelephone());
         values.put(RunMetaData.RunTable.START_TIME,run.getStart_time());
         values.put(RunMetaData.RunTable.END_TIME,run.getEnd_time());
@@ -37,20 +38,20 @@ public class DatebaseAdapter {
         db.close();
         System.out.println("插入数据成功！");
     }
-    public void delete(int id){
+    public void delete(String id){
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        String[] args = {String.valueOf(id)};
+        String[] args = {id};
         db.delete(RunMetaData.RunTable.TABLE_NAME,"_id=?",args);
         db.close();
     }
 
-    public void update(Run run){
+    public void update(Run run,String oldID){
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(RunMetaData.RunTable.ID,run.getId());
         values.put(RunMetaData.RunTable.ISUPDATE,run.isUpdate());
-        String agre[] = {String.valueOf(run.getId())};
+        String agre[] = {oldID};
         db.update(RunMetaData.RunTable.TABLE_NAME,values,"_id=?",agre);
-
     }
 
     public Run findById(int id){
@@ -60,7 +61,7 @@ public class DatebaseAdapter {
         Run run = null;
         while (cursor.moveToNext()){
             run =  new Run();
-            run.setId(cursor.getInt(cursor.getColumnIndex("_id")));
+            run.setId(cursor.getString(cursor.getColumnIndex("_id")));
             run.setTelephone(cursor.getString(cursor.getColumnIndex("telephone")));
             run.setStart_time(cursor.getInt(cursor.getColumnIndex("start_time")));
             run.setEnd_time(cursor.getInt(cursor.getColumnIndex("end_time")));
@@ -80,7 +81,7 @@ public class DatebaseAdapter {
         ArrayList<Run> runArrayList = new ArrayList<>();
         while (cursor.moveToNext()){
             Run run =  new Run();
-            run.setId(cursor.getInt(cursor.getColumnIndex("_id")));
+            run.setId(cursor.getString(cursor.getColumnIndex("_id")));
             run.setTelephone(cursor.getString(cursor.getColumnIndex("telephone")));
             run.setStart_time(cursor.getInt(cursor.getColumnIndex("start_time")));
             run.setEnd_time(cursor.getInt(cursor.getColumnIndex("end_time")));

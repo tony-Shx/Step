@@ -8,17 +8,20 @@ import java.io.Serializable;
 
 public class Run implements Serializable{
     private String telephone;
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-    private int id, duration;
+
+    private int  duration;
     private long start_time, end_time;
     private float length,consume;
-    private String points;
+    private String id,points;
     private boolean isUpdate;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public boolean isUpdate() {
         return isUpdate;

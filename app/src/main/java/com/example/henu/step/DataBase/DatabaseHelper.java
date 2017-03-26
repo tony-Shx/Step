@@ -11,8 +11,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "run.db";
-    private static final int version = 2;
-    private static final String CREATE_TABLE_RUN = "CREATE TABLE IF NOT EXISTS run(_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+    private static final int version = 1;
+    private static final String CREATE_TABLE_RUN = "CREATE TABLE IF NOT EXISTS run(_id TEXT PRIMARY KEY," +
             "telephone TEXT,start_time INTEGER,end_time INTEGER,length REAL,duration INTEGER,consume REAL,points TEXT,is_update Boolean)";
     private static final String DROP_TABLE_RUN = "DROP TABLE IF EXISTS run";
     public DatabaseHelper(Context context) {

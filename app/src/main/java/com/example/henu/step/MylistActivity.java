@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 public class MylistActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -32,6 +33,8 @@ public class MylistActivity extends AppCompatActivity implements AdapterView.OnI
 	private ArrayList<Run> list;
 	private final int UPDATESUCCESS = 0X100;
 	private final int UPDATEFAILED = 0X101;
+	private final int DELETEFAILED = 0X200;
+	private final int DELETESUCCESS = 0X201;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +45,16 @@ public class MylistActivity extends AppCompatActivity implements AdapterView.OnI
 		listView = (ListView) this.findViewById(R.id.listview_mylist);
 		DatebaseAdapter db = new DatebaseAdapter(this);
 		list = db.findAll();
-		listView.setAdapter(new listAdapter(this,list));
+		listView.setAdapter(new listAdapter(this, list));
 		listView.setOnItemClickListener(this);
 		listView.setOnCreateContextMenuListener(this);
 
 	}
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		Intent intent = new Intent(this,RecordShowActivity.class);
-		intent.putExtra("position",position);
+		Intent intent = new Intent(this, RecordShowActivity.class);
+		intent.putExtra("position", position);
 		startActivity(intent);
 	}
 
@@ -59,37 +63,60 @@ public class MylistActivity extends AppCompatActivity implements AdapterView.OnI
 		super.onCreateContextMenu(menu, v, menuInfo);
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 		int position = info.position;
-		menu.add(0,0,position,"删除");
+		menu.add(0, 0, position, "删除");
 		Run run = list.get(position);
-		if(!run.isUpdate()){
-			menu.add(0,1,position,"上传");
+		if (!run.isUpdate()) {
+			menu.add(0, 1, position, "上传");
 		}
-		Log.i("onCreateContextMenu: ", position+" "+String.valueOf(v.getId() ));
+		Log.i("onCreateContextMenu: ", position + " " + String.valueOf(v.getId()));
 	}
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		switch (item.getItemId()){
+		switch (item.getItemId()) {
 			case 0:
 				int position = item.getOrder();
-				Run run = list.get(position);
-				DatebaseAdapter db = new DatebaseAdapter(this);
-				db.delete(run.getId());
-				updateListViewDate();
-				Toast.makeText(this,"删除成功",Toast.LENGTH_LONG).show();
+				deleteRunRecord(position);
 				break;
 			case 1:
 				updateRunRecord(item.getOrder());
-				Toast.makeText(this,"正在上传中...",Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "正在上传中...", Toast.LENGTH_SHORT).show();
 				break;
 		}
 		return true;
 	}
 
-	private void updateListViewDate(){
+	private void deleteRunRecord(final int position) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				final Run run = list.get(position);
+				RunningRecord runningRecord = new RunningRecord();
+				runningRecord.setObjectId(run.getId());
+				runningRecord.delete(new UpdateListener() {
+					@Override
+					public void done(BmobException e) {
+						if (e == null) {
+							Message msg = new Message();
+							msg.arg1 = DELETESUCCESS;
+							msg.obj = run;
+							handler.sendMessage(msg);
+						} else {
+							Message msg = new Message();
+							msg.arg1 = DELETEFAILED;
+							handler.sendMessage(msg);
+						}
+					}
+				});
+			}
+		}).start();
+
+	}
+
+	private void freshListViewDate() {
 		DatebaseAdapter db = new DatebaseAdapter(this);
 		list = db.findAll();
-		listView.setAdapter(new listAdapter(this,list));
+		listView.setAdapter(new listAdapter(this, list));
 	}
 
 	private void updateRunRecord(final int position) {
@@ -109,16 +136,17 @@ public class MylistActivity extends AppCompatActivity implements AdapterView.OnI
 				runningRecord.save(new SaveListener<String>() {
 					@Override
 					public void done(String s, BmobException e) {
-						if(e==null){
+						if (e == null) {
 							Message msg = new Message();
 							msg.arg1 = UPDATESUCCESS;
 							msg.arg2 = position;
+							msg.obj = s;
 							handler.sendMessage(msg);
-						}else{
+						} else {
 							Message msg = new Message();
 							msg.arg1 = UPDATEFAILED;
 							handler.sendMessage(msg);
-							Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
+							Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
 						}
 					}
 				});
@@ -126,18 +154,34 @@ public class MylistActivity extends AppCompatActivity implements AdapterView.OnI
 		}).start();
 	}
 
-	private Handler handler = new Handler(){
+	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			if(msg.arg1==UPDATESUCCESS){
-				Run run = list.get(msg.arg2);
-				run.setUpdate(1);
-				DatebaseAdapter db = new DatebaseAdapter(getApplicationContext());
-				db.update(run);
-				updateListViewDate();
-				Toast.makeText(getApplicationContext(),"上传成功！",Toast.LENGTH_LONG).show();
-			}else if(msg.arg1==UPDATEFAILED){
-				Toast.makeText(getApplicationContext(),"数据同步出错，请检查网络连接",Toast.LENGTH_LONG).show();
+			DatebaseAdapter db = new DatebaseAdapter(getApplicationContext());
+			switch (msg.arg1) {
+				case UPDATESUCCESS:
+					Run run = list.get(msg.arg2);
+					String oldID = run.getId();
+					run.setId((String) msg.obj);
+					run.setUpdate(1);
+					db.update(run, oldID);
+					freshListViewDate();
+					Toast.makeText(getApplicationContext(), "上传成功！", Toast.LENGTH_LONG).show();
+					break;
+				case UPDATEFAILED:
+					Toast.makeText(getApplicationContext(), "数据同步出错，请检查网络连接", Toast.LENGTH_LONG).show();
+					break;
+				case DELETESUCCESS:
+					Run run1 = (Run) msg.obj;
+					db.delete(run1.getId());
+					freshListViewDate();
+					Toast.makeText(getApplicationContext(), "删除成功", Toast.LENGTH_LONG).show();
+					break;
+				case DELETEFAILED:
+					Toast.makeText(getApplicationContext(), "删除出错，请检查网络连接", Toast.LENGTH_LONG).show();
+					break;
+				default:
+					break;
 			}
 		}
 	};
