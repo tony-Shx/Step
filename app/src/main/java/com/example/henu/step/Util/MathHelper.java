@@ -10,8 +10,14 @@ import java.util.List;
  */
 
 public class MathHelper {
-	public MathHelper() {
 
+	//单例模式应用（懒汉模式）
+	private final static MathHelper mathhelper = new MathHelper();
+	private MathHelper() {
+	}
+
+	public static MathHelper getInstance(){
+		return mathhelper;
 	}
 
 	public double getLength(List<LatLng> points){
@@ -22,9 +28,7 @@ public class MathHelper {
 			point1 = points.get(i);
 			point2 = points.get(i+1);
 			stepLength = stepLength + DistanceUtil.getDistance(point1,point2);
-			System.out.println("stepLength"+i+"=="+stepLength);
 		}
-		System.out.println("stepLength="+stepLength);
 		return stepLength;
 	}
 

@@ -14,7 +14,6 @@ import com.example.henu.step.Bean.RunningRecord;
 import com.example.henu.step.DataBase.DatebaseAdapter;
 import com.example.henu.step.Util.DateHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.Bmob;
@@ -71,8 +70,8 @@ public class SplashActivity extends Activity {
 									run = new Run();
 									run.setId(id);
 									run.setTelephone(runningRecord.getTelephone());
-									long startTime = DateHelper.changeStringToDate(runningRecord.getStart_time());
-									long endTime = DateHelper.changeStringToDate(runningRecord.getEnd_time());
+									long startTime = DateHelper.getInstance().changeStringToDate(runningRecord.getStart_time());
+									long endTime = DateHelper.getInstance().changeStringToDate(runningRecord.getEnd_time());
 									if (startTime > 0L && endTime > 0L) {
 										run.setStart_time(startTime / 1000 - 1483200000L);
 										run.setEnd_time(endTime / 1000 - 1483200000L);

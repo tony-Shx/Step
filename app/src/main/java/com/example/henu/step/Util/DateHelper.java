@@ -10,11 +10,23 @@ import java.util.Date;
 
 public class DateHelper {
 
-	public static String changeDateToString(long time){
+	//单例模式应用（饥汉模式）
+	private static DateHelper dateHelper = null;
+	private DateHelper() {
+	}
+
+	public static DateHelper getInstance(){
+		if(dateHelper==null){
+			dateHelper = new DateHelper();
+		}
+		return dateHelper;
+	}
+
+	public String changeDateToString(long time){
 		return new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new java.util.Date((time+1483200000L) * 1000));
 	}
 
-	public  static Long changeStringToDate(String str){
+	public Long changeStringToDate(String str){
 		try {
 			return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(str).getTime();
 		} catch (ParseException e) {
@@ -23,7 +35,7 @@ public class DateHelper {
 		return 0L;
 	}
 
-	static String chagetime(int temp){
+	public String chagetime(int temp){
 		//处理运动时间
 		if (temp > 59) {
 			int fen = temp / 60;

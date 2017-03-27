@@ -105,7 +105,6 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 		OverlayOptions option;
 		int temp = 0;
 		BitmapDescriptor bitmap = null;
-		MathHelper mathHelper = new MathHelper();
 		double length;
 		double speed;
 
@@ -146,7 +145,7 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 				mBaiduMap.clear();
 				mBaiduMap.addOverlay(option);
 				//计算运动的距离并且显示
-				length = mathHelper.getLength(points) / 1000;
+				length = MathHelper.getInstance().getLength(points) / 1000;
 				editText_length.setText("累计距离：" + df.format(length) + " 千米");
 				//处理运动时间
 				if (temp > 59) {
@@ -286,8 +285,8 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
 				RunningRecord runningRecord = new RunningRecord();
 				runningRecord.setPoints(run.getPoints());
 				runningRecord.setTelephone(run.getTelephone());
-				runningRecord.setStart_time(DateHelper.changeDateToString(run.getStart_time()));
-				runningRecord.setEnd_time(DateHelper.changeDateToString(run.getEnd_time()));
+				runningRecord.setStart_time(DateHelper.getInstance().changeDateToString(run.getStart_time()));
+				runningRecord.setEnd_time(DateHelper.getInstance().changeDateToString(run.getEnd_time()));
 				runningRecord.setLength(run.getLength());
 				runningRecord.setDuration(run.getDuration());
 				runningRecord.setConsume(run.getConsume());

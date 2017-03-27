@@ -133,8 +133,8 @@ public class MylistActivity extends AppCompatActivity implements AdapterView.OnI
 				RunningRecord runningRecord = new RunningRecord();
 				runningRecord.setPoints(run.getPoints());
 				runningRecord.setTelephone(run.getTelephone());
-				runningRecord.setStart_time(DateHelper.changeDateToString(run.getStart_time()));
-				runningRecord.setEnd_time(DateHelper.changeDateToString(run.getEnd_time()));
+				runningRecord.setStart_time(DateHelper.getInstance().changeDateToString(run.getStart_time()));
+				runningRecord.setEnd_time(DateHelper.getInstance().changeDateToString(run.getEnd_time()));
 				runningRecord.setLength(run.getLength());
 				runningRecord.setDuration(run.getDuration());
 				runningRecord.setConsume(run.getConsume());

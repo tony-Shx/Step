@@ -178,8 +178,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 									run = new Run();
 									run.setId(id);
 									run.setTelephone(runningRecord.getTelephone());
-									long startTime = DateHelper.changeStringToDate(runningRecord.getStart_time());
-									long endTime = DateHelper.changeStringToDate(runningRecord.getEnd_time());
+									long startTime = DateHelper.getInstance().changeStringToDate(runningRecord.getStart_time());
+									long endTime = DateHelper.getInstance().changeStringToDate(runningRecord.getEnd_time());
 									if (startTime > 0L && endTime > 0L) {
 										run.setStart_time(startTime / 1000 - 1483200000L);
 										run.setEnd_time(endTime / 1000 - 1483200000L);
