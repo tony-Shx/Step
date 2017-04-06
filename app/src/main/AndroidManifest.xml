@@ -65,6 +65,7 @@
         </activity>
         <activity android:name=".RecordShowActivity">
         </activity>
+        <activity android:name=".TeamActivity"></activity>
     </application>
 
 </manifest>
