@@ -11,7 +11,7 @@ import java.util.List;
 
 public class MathHelper {
 
-	//单例模式应用（懒汉模式）
+	//单例模式应用（饿汉模式）
 	private final static MathHelper mathhelper = new MathHelper();
 	private MathHelper() {
 	}

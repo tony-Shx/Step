@@ -47,10 +47,12 @@ public class SecondFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String TAG = settingList.get(i).getName();
                 if(TAG=="个人信息修改"){
-                    Toast.makeText((getActivity()),TAG,Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(),InformationActivityActivity.class);
+                    startActivity(intent);
                 }
                 if(TAG=="密码修改"){
-                    Toast.makeText((getActivity()),TAG,Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(),ChangePassword.class);
+                    startActivity(intent);
                 }
                 if(TAG=="注销登录"){
                     Toast.makeText((getActivity()),TAG,Toast.LENGTH_SHORT).show();

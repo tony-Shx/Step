@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class DateHelper {
 
-	//单例模式应用（饥汉模式）
+	//单例模式应用（懒汉模式）
 	private static DateHelper dateHelper = null;
 	private DateHelper() {
 	}
