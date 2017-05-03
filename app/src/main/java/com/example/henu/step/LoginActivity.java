@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -22,19 +23,18 @@ import com.example.henu.step.Bean.RunningRecord;
 import com.example.henu.step.Bean.User;
 import com.example.henu.step.DataBase.DatebaseAdapter;
 import com.example.henu.step.Util.DateHelper;
-
+import java.util.HashMap;
 import java.util.List;
-
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-
 public class LoginActivity extends Activity implements View.OnClickListener {
 
 	private Button button_register, button_login;
 	private EditText editText_telephone_login, editText_password_login;
 	private Dialog dialog;
+	private ImageView weChat_login,qq_login,sina_login;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		button_register = (Button) findViewById(R.id.button_register);
 		editText_password_login = (EditText) findViewById(R.id.editText_password_login);
 		editText_telephone_login = (EditText) findViewById(R.id.editText_telephone_login);
+		sina_login = (ImageView) findViewById(R.id.sina_login);
+		weChat_login = (ImageView) findViewById(R.id.weChat_login);
+		qq_login = (ImageView) findViewById(R.id.qq_login);
+		sina_login.setOnClickListener(this);
+		weChat_login.setOnClickListener(this);
+		qq_login.setOnClickListener(this);
 		button_login.setOnClickListener(this);
 		button_register.setOnClickListener(this);
 	}
@@ -152,10 +158,42 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 				Intent intent = new Intent(this, RegisterActivity.class);
 				startActivity(intent);
 				break;
+			case R.id.qq_login:
+				break;
+			case R.id.weChat_login:
+				break;
+			case R.id.sina_login:
+//				ShareSDK.initSDK(this);
+//				Platform[] platformlist = ShareSDK.getPlatformList();
+//				if (platformlist != null) {
+//					login("SinaWeibo");
+//				}
+				break;
 			default:
 				break;
 		}
 
+	}
+
+	private void login(String platformName) {
+//		Log.i("login: ",platformName);
+//		LoginApi api = new LoginApi();
+//		//设置登陆的平台后执行登陆的方法
+//		api.setPlatform(platformName);
+//		api.setOnLoginListener(new OnLoginListener() {
+//			public boolean onLogin(String platform, HashMap<String, Object> res) {
+//				// 在这个方法填写尝试的代码，返回true表示还不能登录，需要注册
+//				// 此处全部给回需要注册
+//				return true;
+//			}
+//
+//			@Override
+//			public boolean onRegister(UserInfo info) {
+//				// 填写处理注册信息的代码，返回true表示数据合法，注册页面可以关闭
+//				return true;
+//			}
+//		});
+//		api.login(this);
 	}
 
 	private void downloadRunningDate(final String telephone) {

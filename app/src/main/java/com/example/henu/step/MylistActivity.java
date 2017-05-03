@@ -67,6 +67,7 @@ public class MylistActivity extends AppCompatActivity implements AdapterView.OnI
 		if (!run.isUpdate()) {
 			menu.add(0, 1, position, "上传");
 		}
+		menu.add(0,2,position,"分享");
 		Log.i("onCreateContextMenu: ", position + " " + String.valueOf(v.getId()));
 	}
 
@@ -87,6 +88,10 @@ public class MylistActivity extends AppCompatActivity implements AdapterView.OnI
 			case 1:
 				updateRunRecord(item.getOrder());
 				Toast.makeText(this, "正在上传中...", Toast.LENGTH_SHORT).show();
+				break;
+			case 2:
+				// TODO: 2017/5/3  准备分享.
+				Toast.makeText(this, "准备分享...", Toast.LENGTH_SHORT).show();
 				break;
 		}
 		return true;

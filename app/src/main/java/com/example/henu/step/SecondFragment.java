@@ -1,7 +1,9 @@
 package com.example.henu.step;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -47,15 +49,20 @@ public class SecondFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String TAG = settingList.get(i).getName();
                 if(TAG=="个人信息修改"){
-                    Intent intent = new Intent(getActivity(),InformationActivityActivity.class);
+                    Intent intent = new Intent(getActivity(),InformationActivity.class);
                     startActivity(intent);
                 }
                 if(TAG=="密码修改"){
-                    Intent intent = new Intent(getActivity(),ChangePassword.class);
+                    Intent intent = new Intent(getActivity(),ChangePasswordActivity.class);
                     startActivity(intent);
                 }
                 if(TAG=="注销登录"){
-                    Toast.makeText((getActivity()),TAG,Toast.LENGTH_SHORT).show();
+                    SharedPreferences sp = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putBoolean("isLogin",false);
+                    editor.commit();
+                    startActivity(new Intent(getActivity(),LoginActivity.class));
+                    getActivity().finish();
                 }
                 if(TAG=="关于我们"){
                     Intent intent = new Intent(getActivity(),TeamActivity.class);

@@ -22,7 +22,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
         android:orientation="vertical">
 
       <LinearLayout
@@ -91,6 +90,40 @@
             android:textColor="#FFFFFF"
             android:textSize="25dp"
             android:textStyle="italic" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="合作账号登录:"
+                android:textColor="#ffffff"/>
+            <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sina_login"
+            android:layout_margin="5dp"
+            android:src="@mipmap/sina_login"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:id="@+id/qq_login"
+                android:src="@mipmap/qq_login"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:id="@+id/weChat_login"
+                android:src="@mipmap/wechat_login"/>
+
+
+
+        </LinearLayout>
+
+
 
         <Button
             android:id="@+id/button_register"

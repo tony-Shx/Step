@@ -66,8 +66,8 @@
         <activity android:name=".RecordShowActivity">
         </activity>
         <activity android:name=".TeamActivity"/>
-        <activity android:name=".ChangePassword" />
-        <activity android:name=".InformationActivityActivity"/>
+        <activity android:name=".ChangePasswordActivity" />
+        <activity android:name=".InformationActivity"/>
     </application>
 
 </manifest>
