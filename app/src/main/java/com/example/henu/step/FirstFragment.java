@@ -10,21 +10,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.henu.step.Bean.Run;
+import com.example.henu.step.Bean.User;
+import com.example.henu.step.Bean.UserInfo;
 import com.example.henu.step.DataBase.DatebaseAdapter;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 
 /**
  * Created by Administrator on 2017/3/12 0012.
  */
-public class FirstFragment extends Fragment {
+public class FirstFragment extends Fragment implements View.OnClickListener {
 
 	private TextView txt_run_corder,txt_run_time,t1, textView_mylist;
 	private Button setArea,button_w;
+	private ImageView imageView_touXiang;
 
 
 	@Nullable
@@ -35,6 +46,7 @@ public class FirstFragment extends Fragment {
 		txt_run_time = (TextView) view.findViewById(R.id.run_time);
 		t1 = (TextView) view.findViewById(R.id.t1);
 		textView_mylist = (TextView) view.findViewById(R.id.textView_mylist);
+		imageView_touXiang = (ImageView) view.findViewById(R.id.touxiang);
 		textView_mylist.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -49,6 +61,7 @@ public class FirstFragment extends Fragment {
 				startActivity(new Intent(getActivity(), WeatherActivity.class));
 			}
 		});
+		imageView_touXiang.setOnClickListener(this);
 		dateInit();
 		return view;
 	}
@@ -69,6 +82,48 @@ public class FirstFragment extends Fragment {
 		SharedPreferences sp = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
 		t1.setText(sp.getString("telephone", "null"));
 
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		SharedPreferences preferences = getActivity().getSharedPreferences("login",Context.MODE_PRIVATE);
+		String txurl = preferences.getString("txurl","null");
+		String telephone = preferences.getString("telephone",null);
+		if(txurl.equals("null")){
+			BmobQuery<UserInfo> query = new BmobQuery<>();
+			query.addWhereEqualTo("telephone",telephone);
+			query.findObjects(new FindListener<UserInfo>() {
+				@Override
+				public void done(List<UserInfo> list, BmobException e) {
+					if(e==null){
+						if(list.isEmpty()){
+							Toast.makeText(getActivity(),"查询头像出错",Toast.LENGTH_LONG).show();
+						}else{
+							UserInfo userInfo = list.get(0);
+							Picasso.with(getActivity()).load(userInfo.getTouXiang()).into(imageView_touXiang);
+						}
+					}else{
+						Toast.makeText(getActivity(),"头像加载失败.....",Toast.LENGTH_LONG).show();
+					}
+
+				}
+			});
+		}else{
+			Picasso.with(getActivity()).load(txurl).into(imageView_touXiang);
+		}
+
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()){
+			case R.id.touxiang:
+				startActivity(new Intent(getActivity(),ShowDetailActivity.class));
+				break;
+			default:
+				break;
+		}
 	}
 }
 

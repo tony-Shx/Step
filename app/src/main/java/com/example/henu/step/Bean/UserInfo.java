@@ -11,9 +11,18 @@ public class UserInfo extends BmobObject{
 	private String telephone;
 	private String sex;
 	private int stature,weight;
+	private String touXiang;
 
 	public UserInfo() {
 
+	}
+
+	public String getTouXiang() {
+		return touXiang;
+	}
+
+	public void setTouXiang(String touXiang) {
+		this.touXiang = touXiang;
 	}
 
 	public String getUsername() {

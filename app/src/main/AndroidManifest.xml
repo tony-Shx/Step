@@ -23,6 +23,11 @@
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <!-- 蓝牙分享所需的权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
     <application
         android:name=".MyApplication"
@@ -40,6 +45,7 @@
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -53,7 +59,9 @@
         </activity>
         <activity android:name=".RunningActivity">
         </activity>
-        <activity android:name=".WeatherActivity" android:theme="@style/Theme.AppCompat"/>
+        <activity
+            android:name=".WeatherActivity"
+            android:theme="@style/Theme.AppCompat"/>
 
         <service
             android:name="com.baidu.location.f"
@@ -66,8 +74,10 @@
         <activity android:name=".RecordShowActivity">
         </activity>
         <activity android:name=".TeamActivity"/>
-        <activity android:name=".ChangePasswordActivity" />
+        <activity android:name=".ChangePasswordActivity"/>
         <activity android:name=".InformationActivity"/>
+        <activity android:name=".ShowDetailActivity">
+        </activity>
     </application>
 
 </manifest>

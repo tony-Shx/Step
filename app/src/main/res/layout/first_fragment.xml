@@ -38,8 +38,11 @@
 
         <ImageView
             android:id="@+id/touxiang"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:scaleType="fitStart"
             android:background="@mipmap/buddy_1" />
 
         <TextView
