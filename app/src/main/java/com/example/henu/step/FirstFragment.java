@@ -38,7 +38,6 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
 	private ImageView imageView_touXiang;
 
 
-	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.first_fragment, container, false);

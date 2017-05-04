@@ -40,9 +40,9 @@ public class DateHelper {
 		if (temp > 59) {
 			int fen = temp / 60;
 			int miao = temp % 60;
-			return "累计用时： " + fen + "分 " + miao + "秒";
+			return fen + "分" + miao + "秒";
 		} else {
-			return "累计用时： 0分 " + temp + "秒";
+			return "0分" + temp + "秒";
 		}
 	}
 }

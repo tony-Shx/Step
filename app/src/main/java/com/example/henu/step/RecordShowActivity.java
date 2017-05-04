@@ -2,8 +2,12 @@ package com.example.henu.step;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.widget.TextView;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
@@ -15,12 +19,14 @@ import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.example.henu.step.Bean.Run;
 import com.example.henu.step.DataBase.DatebaseAdapter;
+import com.example.henu.step.Util.DateHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecordShowActivity extends AppCompatActivity {
 	private MapView mMapView;
+	private TextView textView_record_length,textView_record_time,textView_record_consume;
 	private BaiduMap mBaiduMap;
 	// 构造折线点坐标
 	List<LatLng> points = new ArrayList<LatLng>();
@@ -32,18 +38,30 @@ public class RecordShowActivity extends AppCompatActivity {
 		//注意该方法要再setContentView方法之前实现
 		SDKInitializer.initialize(getApplicationContext());
 		setContentView(R.layout.activity_record_show);
-		int position= getIntent().getIntExtra("position",0);
-		DatebaseAdapter db = new DatebaseAdapter(this);
-		ArrayList<Run> list = db.findAll();
+		textView_record_time = (TextView) findViewById(R.id.textView_record_time);
+		textView_record_consume = (TextView) findViewById(R.id.textView_record_consume);
+		textView_record_length = (TextView) findViewById(R.id.textView_record_length);
+		Run run= (Run) getIntent().getSerializableExtra("position");
+		textView_record_length.setText(String.format("%.2f",run.getLength()));
+		textView_record_time.setText(DateHelper.getInstance().chagetime(run.getDuration()));
 		mMapView = (MapView) findViewById(R.id.mapView_show_record);
 		mBaiduMap = mMapView.getMap();
-		String str_point = list.get(position).getPoints();
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setTitle("记录页面");
+		String str_point = run.getPoints();
 		analyzePoints(str_point);
 		OverlayOptions ooPolyline = new PolylineOptions().width(10).color(Integer.valueOf(Color.GREEN))
 				.points(points);
 		//添加在地图中
 		Polyline mPolyline = (Polyline) mBaiduMap.addOverlay(ooPolyline);
 		mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLngZoom(points.get(points.size()-1),19));
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.options,menu);
+		return true;
 	}
 
 	private void analyzePoints(String str_point) {

@@ -3,8 +3,9 @@ package com.example.henu.step;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
@@ -53,7 +54,7 @@ public class MylistActivity extends AppCompatActivity implements AdapterView.OnI
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Intent intent = new Intent(this, RecordShowActivity.class);
-		intent.putExtra("position", position);
+		intent.putExtra("position", list.get(position));
 		startActivity(intent);
 	}
 
@@ -67,7 +68,7 @@ public class MylistActivity extends AppCompatActivity implements AdapterView.OnI
 		if (!run.isUpdate()) {
 			menu.add(0, 1, position, "上传");
 		}
-		menu.add(0,2,position,"分享");
+		//menu.add(0,2,position,"分享");
 		Log.i("onCreateContextMenu: ", position + " " + String.valueOf(v.getId()));
 	}
 
