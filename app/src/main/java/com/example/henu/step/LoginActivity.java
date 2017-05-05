@@ -23,6 +23,20 @@ import com.example.henu.step.Bean.RunningRecord;
 import com.example.henu.step.Bean.User;
 import com.example.henu.step.DataBase.DatebaseAdapter;
 import com.example.henu.step.Util.DateHelper;
+import com.tencent.connect.UserInfo;
+import com.tencent.connect.auth.QQAuth;
+import com.tencent.connect.auth.QQToken;
+import com.tencent.connect.avatar.QQAvatar;
+import com.tencent.connect.common.Constants;
+import com.tencent.open.utils.HttpUtils;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import cn.bmob.v3.Bmob;
@@ -35,12 +49,17 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 	private EditText editText_telephone_login, editText_password_login;
 	private Dialog dialog;
 	private ImageView weChat_login,qq_login,sina_login;
+	private Tencent mTencent;
+	private UserInfo userInfo; //qq用户信息
+
+	private static final String TAG = LoginActivity.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		//第一：默认初始化
+		mTencent = Tencent.createInstance("101400364", this.getApplicationContext());
 		Bmob.initialize(this, "bd7c2a4e820ce954f26ac4b4b2aaa85d");
 		findView();
 	}
@@ -159,6 +178,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 				startActivity(intent);
 				break;
 			case R.id.qq_login:
+				login();
 				break;
 			case R.id.weChat_login:
 				break;
@@ -175,25 +195,106 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
 	}
 
-	private void login(String platformName) {
-//		Log.i("login: ",platformName);
-//		LoginApi api = new LoginApi();
-//		//设置登陆的平台后执行登陆的方法
-//		api.setPlatform(platformName);
-//		api.setOnLoginListener(new OnLoginListener() {
-//			public boolean onLogin(String platform, HashMap<String, Object> res) {
-//				// 在这个方法填写尝试的代码，返回true表示还不能登录，需要注册
-//				// 此处全部给回需要注册
-//				return true;
-//			}
-//
-//			@Override
-//			public boolean onRegister(UserInfo info) {
-//				// 填写处理注册信息的代码，返回true表示数据合法，注册页面可以关闭
-//				return true;
-//			}
-//		});
-//		api.login(this);
+	public void login()
+	{
+
+		if (!mTencent.isSessionValid())
+		{
+			mTencent.login(this, "all", listener);
+		}
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.i(TAG, "onActivityResult: "+resultCode);
+		if (resultCode == -1) {
+			final AlertDialog.Builder normalDia = new AlertDialog.Builder(LoginActivity.this);
+			normalDia.setIcon(R.drawable.smssdk_dialog_btn_nor);
+			normalDia.setTitle("温馨提示：");
+			normalDia.setMessage("正在加载，请稍后");
+			normalDia.setView(new ProgressBar(LoginActivity.this));
+			normalDia.setCancelable(false);
+			dialog = normalDia.show();
+			SharedPreferences sp = getSharedPreferences("login",Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = sp.edit();
+			editor.putBoolean("isLogin",true);
+			editor.putString("telephone","17839223557");
+			//editor.putString("password","");
+			editor.commit();
+			downloadRunningDate("17839223557");
+		}else{
+			Toast.makeText(this,"登录已取消",Toast.LENGTH_LONG).show();
+		}
+	}
+
+	IUiListener listener = new BaseUiListener(){
+		@Override
+		protected void doComplete(JSONObject values) {
+			Log.i(TAG, "doComplete: "+values);
+
+			JSONObject jo =  values;
+			String openID = null;
+			try {
+				openID = jo.getString("openid");
+				String accessToken = jo.getString("access_token");
+				String expires = jo.getString("expires_in");
+				mTencent.setOpenId(openID);
+				mTencent.setAccessToken(accessToken, expires);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+
+
+//			userInfo = new UserInfo(LoginActivity.this, mTencent.getQQToken());
+//			userInfo.getUserInfo(userInfoListener);
+		}
+	};
+
+	IUiListener userInfoListener = new BaseUiListener(){
+		@Override
+		protected void doComplete(JSONObject arg0) {
+			if(arg0 == null){
+				return;
+			}
+			try {
+				Log.i(TAG, "doComplete: "+arg0.toString());
+				JSONObject jo = (JSONObject) arg0;
+				int ret = jo.getInt("ret");
+				System.out.println("json=" + String.valueOf(jo));
+				String nickName = jo.getString("nickname");
+				String gender = jo.getString("gender");
+
+				Toast.makeText(LoginActivity.this, "你好，" + nickName,
+						Toast.LENGTH_LONG).show();
+
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+	};
+
+	private class BaseUiListener implements IUiListener {
+
+		protected void doComplete(JSONObject values) {
+			Log.i("doComplete: ", values.toString());
+		}
+
+		@Override
+		public void onError(UiError e) {
+			Log.e("onError:", "code:" + e.errorCode + ", msg:"
+					+ e.errorMessage + ", detail:" + e.errorDetail);
+		}
+
+		@Override
+		public void onComplete(Object o) {
+
+		}
+
+		@Override
+		public void onCancel() {
+
+		}
+
 	}
 
 	private void downloadRunningDate(final String telephone) {

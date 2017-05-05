@@ -19,6 +19,17 @@
         android:layout_alignParentStart="true">
         <!--android:layout_above="@+id/LinearLayout_record"-->
     </com.baidu.mapapi.map.MapView>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView_record"
+        android:visibility="gone"
+        android:layout_above="@+id/LinearLayout_record"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+        <!--android:layout_above="@+id/LinearLayout_record"-->
+    </ImageView>
     <LinearLayout
         android:id="@+id/LinearLayout_record"
         android:layout_width="match_parent"
