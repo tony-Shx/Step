@@ -83,10 +83,11 @@
     <Button
             android:id="@+id/button2_login"
             android:layout_margin="10dp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:background="#00000000"
-            android:text="登录"
+            android:background="@drawable/button_background"
+            android:text="    登录    "
             android:textColor="#FFFFFF"
             android:textSize="25dp"
             android:textStyle="italic" />

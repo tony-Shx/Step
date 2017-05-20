@@ -85,7 +85,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		switch (v.getId()) {
 			case R.id.button2_login:
 				button_login.setClickable(false);
-				button_register.setClickable(false);
 				final String telephone = editText_telephone_login.getText().toString();
 				final String password = editText_password_login.getText().toString();
 				if (telephone.length() != 11) {
@@ -111,6 +110,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 							})
 							.create();
 					dialog.show();
+					button_login.setClickable(true);
 				} else {
 					final AlertDialog.Builder normalDia = new AlertDialog.Builder(LoginActivity.this);
 					normalDia.setIcon(R.drawable.smssdk_dialog_btn_nor);
@@ -119,6 +119,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 					normalDia.setView(new ProgressBar(this));
 					normalDia.setCancelable(false);
 					dialog = normalDia.show();
+					button_login.setClickable(true);
 					BmobQuery<User> query = new BmobQuery<User>();
 					//查询username叫“XX”的数据
 					query.addWhereEqualTo("telephone", telephone);
@@ -163,10 +164,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 										downloadRunningDate(telephone);
 
 									}else{
+										dialog.dismiss();
 										Toast.makeText(getApplicationContext(), "密码错误，请检查您的密码", Toast.LENGTH_LONG).show();
 									}
 								}
 							} else {
+								dialog.dismiss();
 								Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
 							}
 						}
@@ -178,11 +181,21 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 				startActivity(intent);
 				break;
 			case R.id.qq_login:
-				login();
-				break;
+
+				//login();
 			case R.id.weChat_login:
-				break;
 			case R.id.sina_login:
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle("温馨提示");
+				builder.setCancelable(true);
+				builder.setMessage("因第三方限制，在应用未上线阶段，暂无法使用第三方登录！");
+				builder.setPositiveButton("我知道了", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+				builder.show();
 //				ShareSDK.initSDK(this);
 //				Platform[] platformlist = ShareSDK.getPlatformList();
 //				if (platformlist != null) {
@@ -197,7 +210,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
 	public void login()
 	{
-
 		if (!mTencent.isSessionValid())
 		{
 			mTencent.login(this, "all", listener);

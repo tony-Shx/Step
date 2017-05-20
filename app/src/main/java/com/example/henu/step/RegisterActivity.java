@@ -140,8 +140,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
 			button_getcode.setText(sb);
 			if (msg.arg1 <= 0) {
 				button_getcode.setText("点击获取");
+				button_getcode.setTextColor(Color.WHITE);
 				button_getcode.setClickable(true);
-				button_getcode.setTextColor(Color.BLACK);
 			}
 		}
 	};

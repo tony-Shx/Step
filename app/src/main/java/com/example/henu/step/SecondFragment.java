@@ -2,12 +2,14 @@ package com.example.henu.step;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,8 +67,20 @@ public class SecondFragment extends Fragment {
                     getActivity().finish();
                 }
                 if(TAG=="关于我们"){
-                    Intent intent = new Intent(getActivity(),TeamActivity.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(getActivity(),TeamActivity.class);
+//                    startActivity(intent);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("关于我们");
+                    builder.setView(R.layout.dialog_about_us);
+                    builder.setCancelable(true);
+                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
                 }
             }
         });

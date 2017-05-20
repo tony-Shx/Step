@@ -10,7 +10,12 @@
     android:background="@mipmap/b1"
     android:weightSum="1">
 
-
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginTop="50dp"
+    android:layout_height="wrap_content"
+    android:src="@mipmap/ic_launch"/>
 
     <EditText
         style="@style/EditTextTheme"
@@ -21,6 +26,7 @@
         android:textSize="26sp"
         android:textColor="#FFFFFF"
         android:hint="@string/telephoneHint"
+        android:textColorHint="#969696"
         android:ems="11"
         android:maxLength="11"
         android:layout_marginTop="37dp"
@@ -37,6 +43,7 @@
         android:textSize="26sp"
         android:hint="@string/passwordHint"
         android:ems="20"
+        android:textColorHint="#969696"
         android:maxLength="20"
         android:layout_marginTop="25dp"
         android:id="@+id/editText_password"
@@ -57,6 +64,7 @@
             android:textSize="26sp"
             android:textColor="#FFFFFF"
             android:hint="短信验证码"
+            android:textColorHint="#969696"
             android:maxLength="6"
             android:layout_marginTop="25dp"
             android:id="@+id/editText_code"
@@ -66,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:background="#00000000"
+            android:background="@drawable/button_background"
             android:textColor="#FFFFFF"
             android:textStyle="italic"
             android:textSize="16dp"
@@ -80,17 +88,15 @@
     </LinearLayout>
 
     <Button
-        android:layout_width="203dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="100dp"
-
-        android:background="#00000000"
+        android:layout_gravity="center"
+        android:background="@drawable/button_background"
         android:textColor="#FFFFFF"
         android:textStyle="italic"
         android:textSize="30dp"
         android:text="@string/button_submit_text"
-
         android:id="@+id/button_login_submit"
         />
 
